@@ -5,7 +5,7 @@ interface ICreateTodoDTO {
   text: string;
 }
 
-export class TodosRepository {
+class TodosRepository {
   private ormRepository: Repository<TodoModel>;
 
   constructor() {
@@ -44,3 +44,7 @@ export class TodosRepository {
     await this.ormRepository.delete({ id: todoId });
   }
 }
+
+const todosRepository = new TodosRepository();
+
+export { todosRepository };
