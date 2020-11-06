@@ -21,6 +21,22 @@ export default function useTodos() {
     [todosRepository],
   );
 
+  const deleteTodo = useCallback(
+    async (todoId: number) => {
+      await todosRepository.delete(todoId);
+
+      setTodos(state => state.filter(todo => todo.id === todoId));
+    },
+    [todosRepository],
+  );
+
+  const toggleTodo = useCallback(
+    async (todoId: number) => {
+      await todosRepository.toggleCompleted(todoId);
+    },
+    [todosRepository],
+  );
+
   useEffect(() => {
     todosRepository.getAll().then(setTodos);
   }, [todosRepository]);
@@ -28,5 +44,7 @@ export default function useTodos() {
   return {
     todos,
     addTodo,
+    deleteTodo,
+    toggleTodo,
   };
 }
