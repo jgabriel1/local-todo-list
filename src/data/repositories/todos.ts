@@ -1,15 +1,15 @@
-import { getRepository, Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { TodoModel } from '../entities/TodoModel';
 
 interface ICreateTodoDTO {
   text: string;
 }
 
-class TodosRepository {
+export class TodosRepository {
   private ormRepository: Repository<TodoModel>;
 
-  constructor() {
-    this.ormRepository = getRepository(TodoModel);
+  constructor(connection: Connection) {
+    this.ormRepository = connection.getRepository(TodoModel);
   }
 
   public async create({ text }: ICreateTodoDTO): Promise<TodoModel> {
@@ -44,7 +44,3 @@ class TodosRepository {
     await this.ormRepository.delete({ id: todoId });
   }
 }
-
-const todosRepository = new TodosRepository();
-
-export { todosRepository };
