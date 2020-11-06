@@ -40,7 +40,7 @@ class TodosRepository {
     await this.ormRepository.save(todo);
   }
 
-  public async delete(todoId: string): Promise<void> {
+  public async delete(todoId: number): Promise<void> {
     await this.ormRepository.delete({ id: todoId });
   }
 }

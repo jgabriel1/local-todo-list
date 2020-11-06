@@ -2,19 +2,19 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('todos')
 export class TodoModel {
-  @PrimaryColumn()
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
-  @Column()
+  @Column('varchar')
   text: string;
 
-  @Column({
+  @Column('boolean', {
     nullable: true,
     default: false,
   })
