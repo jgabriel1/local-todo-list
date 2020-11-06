@@ -28,7 +28,7 @@ export class TodosRepository {
     return todos;
   }
 
-  public async toggleCompleted(todoId: string): Promise<void> {
+  public async toggleCompleted(todoId: number): Promise<void> {
     const todo = await this.ormRepository.findOne(todoId);
 
     if (!todo) {

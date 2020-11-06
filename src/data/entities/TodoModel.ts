@@ -11,10 +11,10 @@ export class TodoModel {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column('varchar')
+  @Column()
   text: string;
 
-  @Column('boolean', {
+  @Column({
     nullable: true,
     default: false,
   })
