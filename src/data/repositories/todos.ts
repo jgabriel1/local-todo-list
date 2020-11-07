@@ -15,6 +15,7 @@ export class TodosRepository {
   public async create({ text }: ICreateTodoDTO): Promise<TodoModel> {
     const todo = this.ormRepository.create({
       text,
+      status: false,
     });
 
     await this.ormRepository.save(todo);
