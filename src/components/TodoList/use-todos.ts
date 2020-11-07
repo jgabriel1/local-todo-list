@@ -19,7 +19,7 @@ export default function useTodos() {
         status: false,
       });
 
-      setTodos(state => [...state, newTodo]);
+      setTodos(current => [...current, newTodo]);
     },
     [todosRepository],
   );
@@ -28,7 +28,7 @@ export default function useTodos() {
     async (todoId: number) => {
       await todosRepository.delete(todoId);
 
-      setTodos(state => state.filter(todo => todo.id !== todoId));
+      setTodos(current => current.filter(todo => todo.id !== todoId));
     },
     [todosRepository],
   );
@@ -36,6 +36,12 @@ export default function useTodos() {
   const toggleTodo = useCallback(
     async (todoId: number) => {
       await todosRepository.toggleCompleted(todoId);
+
+      setTodos(current =>
+        current.map(todo =>
+          todo.id === todoId ? { ...todo, status: !todo.status } : todo,
+        ),
+      );
     },
     [todosRepository],
   );
