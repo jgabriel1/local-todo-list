@@ -3,6 +3,7 @@ import { TodoModel } from '../entities/TodoModel';
 
 interface ICreateTodoDTO {
   text: string;
+  status: boolean;
 }
 
 export class TodosRepository {
@@ -15,10 +16,10 @@ export class TodosRepository {
     this.queryRunner = connection.createQueryRunner();
   }
 
-  public async create({ text }: ICreateTodoDTO): Promise<TodoModel> {
+  public async create({ text, status }: ICreateTodoDTO): Promise<TodoModel> {
     const todo = this.ormRepository.create({
       text,
-      status: false,
+      status,
     });
 
     await this.ormRepository.save(todo);

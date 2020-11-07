@@ -14,7 +14,10 @@ export default function useTodos() {
 
   const addTodo = useCallback(
     async ({ text }: Pick<ITodo, 'text'>) => {
-      const newTodo = await todosRepository.create({ text });
+      const newTodo = await todosRepository.create({
+        text,
+        status: false,
+      });
 
       setTodos(state => [...state, newTodo]);
     },
