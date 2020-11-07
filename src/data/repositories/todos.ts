@@ -1,4 +1,4 @@
-import { Connection, Repository } from 'typeorm';
+import { Connection, QueryRunner, Repository } from 'typeorm';
 import { TodoModel } from '../entities/TodoModel';
 
 interface ICreateTodoDTO {
@@ -8,8 +8,11 @@ interface ICreateTodoDTO {
 export class TodosRepository {
   private ormRepository: Repository<TodoModel>;
 
+  private queryRunner: QueryRunner;
+
   constructor(connection: Connection) {
     this.ormRepository = connection.getRepository(TodoModel);
+    this.queryRunner = connection.createQueryRunner();
   }
 
   public async create({ text }: ICreateTodoDTO): Promise<TodoModel> {
@@ -30,18 +33,13 @@ export class TodosRepository {
   }
 
   public async toggleCompleted(todoId: number): Promise<void> {
-    const todo = await this.ormRepository.findOne(todoId);
-
-    if (!todo) {
-      return;
-    }
-
-    todo.status = !todo.status;
-
-    await this.ormRepository.save(todo);
+    await this.queryRunner.query(
+      'UPDATE todos SET status = ((status | 1) - (status & 1)) WHERE id = ?;',
+      [todoId],
+    );
   }
 
   public async delete(todoId: number): Promise<void> {
-    await this.ormRepository.delete({ id: todoId });
+    await this.queryRunner.query('DELETE FROM todos WHERE id = ?;', [todoId]);
   }
 }
