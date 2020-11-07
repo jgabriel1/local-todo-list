@@ -1,10 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('todos')
 export class TodoModel {
@@ -14,15 +8,6 @@ export class TodoModel {
   @Column()
   text: string;
 
-  @Column({
-    nullable: true,
-    default: false,
-  })
+  @Column()
   status: boolean;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }
