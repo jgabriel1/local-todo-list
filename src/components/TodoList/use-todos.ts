@@ -25,7 +25,7 @@ export default function useTodos() {
     async (todoId: number) => {
       await todosRepository.delete(todoId);
 
-      setTodos(state => state.filter(todo => todo.id === todoId));
+      setTodos(state => state.filter(todo => todo.id !== todoId));
     },
     [todosRepository],
   );
