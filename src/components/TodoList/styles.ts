@@ -2,14 +2,19 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 30,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
   },
 
   header: {
-    height: 128,
-    justifyContent: 'flex-end',
-    marginBottom: 32,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
+    paddingTop: 96,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 2,
   },
 
   title: {
@@ -23,17 +28,25 @@ const styles = StyleSheet.create({
   },
 
   newTodoContainer: {
-    marginBottom: 32,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 2,
+    paddingBottom: 16,
   },
 
   newTodoInput: {
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#888',
     borderRadius: 5,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingHorizontal: 32,
     fontSize: 18,
+  },
+
+  newTodoButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 });
 

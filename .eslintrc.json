@@ -42,6 +42,7 @@
     "camelcase": "off",
     "react/style-prop-object": "off",
     "global-require": "off",
+    "no-unused-expressions": "off",
     "react/jsx-filename-extension": [
       1,
       {
