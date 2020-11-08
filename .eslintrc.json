@@ -41,6 +41,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "camelcase": "off",
     "react/style-prop-object": "off",
+    "global-require": "off",
     "react/jsx-filename-extension": [
       1,
       {

@@ -3,11 +3,15 @@ import { StatusBar } from 'expo-status-bar';
 
 import TodoList from './components/TodoList';
 
+import { DatabaseConnectionProvider } from './data/connection';
+
 const App: React.FC = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <TodoList />
+      <DatabaseConnectionProvider>
+        <TodoList />
+      </DatabaseConnectionProvider>
     </>
   );
 };
