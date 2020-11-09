@@ -2,6 +2,8 @@ import React from 'react';
 import { Feather } from '@expo/vector-icons';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
+import styles from './styles';
+
 interface TodoCheckboxProps {
   value: boolean;
   onToggle: () => void | Promise<void>;
@@ -9,7 +11,7 @@ interface TodoCheckboxProps {
 
 const TodoCheckbox: React.FC<TodoCheckboxProps> = ({ value, onToggle }) => {
   return (
-    <BorderlessButton onPress={onToggle}>
+    <BorderlessButton onPress={onToggle} style={styles.container}>
       {value ? (
         <Feather name="check" size={28} color="#61d461" />
       ) : (
