@@ -22,7 +22,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       <DatabaseConnectionProvider>
         <TodoList />
       </DatabaseConnectionProvider>
