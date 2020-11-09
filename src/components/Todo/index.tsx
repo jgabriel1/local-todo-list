@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Dimensions } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import CheckBox from '@react-native-community/checkbox';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+
+import TodoCheckbox from '../TodoCheckbox';
 
 import styles from './styles';
 
@@ -41,7 +42,7 @@ const Todo: React.FC<TodoProps> = ({
     >
       <View style={styles.container}>
         <View style={styles.checkboxContainer}>
-          <CheckBox value={status} onChange={() => handleToggleTodo(id)} />
+          <TodoCheckbox value={status} onToggle={() => handleToggleTodo(id)} />
         </View>
         <Text style={[styles.todoText, status && { opacity: 0.3 }]}>
           {text}
