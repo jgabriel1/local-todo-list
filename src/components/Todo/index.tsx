@@ -1,7 +1,8 @@
 import React from 'react';
+import { View, Text, Dimensions } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { View, Text, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import styles from './styles';
 
@@ -21,14 +22,41 @@ const Todo: React.FC<TodoProps> = ({
   handleToggleTodo,
 }) => {
   return (
-    <View style={styles.container}>
-      <CheckBox value={status} onChange={() => handleToggleTodo(id)} />
-      <Text style={styles.title}>{text}</Text>
-
-      <TouchableOpacity onPress={() => handleDeleteTodo(id)}>
-        <Feather size={24} name="trash" />
-      </TouchableOpacity>
-    </View>
+    <Swipeable
+      containerStyle={{ width: '100%' }}
+      friction={1}
+      useNativeAnimations
+      renderRightActions={() => (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            backgroundColor: '#ff4242',
+            borderBottomColor: '#efefef',
+            borderBottomWidth: 2,
+          }}
+        >
+          <Feather
+            name="trash-2"
+            color="#fff"
+            size={24}
+            style={{ marginRight: 24 }}
+          />
+        </View>
+      )}
+      rightThreshold={Dimensions.get('window').width / 3}
+      onSwipeableRightWillOpen={() => handleDeleteTodo(id)}
+    >
+      <View style={styles.container}>
+        <View style={styles.checkboxContainer}>
+          <CheckBox value={status} onChange={() => handleToggleTodo(id)} />
+        </View>
+        <Text style={[styles.todoText, status && { opacity: 0.3 }]}>
+          {text}
+        </Text>
+      </View>
+    </Swipeable>
   );
 };
 

@@ -45,7 +45,9 @@ const TodoList: React.FC = () => {
       <View style={styles.header}>
         <Text style={styles.title}>My tasks</Text>
 
-        <BorderlessButton>
+        <BorderlessButton
+        // style={{ transform: [{ rotate: '45deg' }] }}
+        >
           <Icon size={36} name="plus" />
         </BorderlessButton>
       </View>

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: '#efefef',
     borderBottomWidth: 2,
   },
 
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
 
   newTodoContainer: {
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: '#efefef',
     borderBottomWidth: 2,
     paddingBottom: 16,
   },
