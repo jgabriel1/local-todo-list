@@ -29,26 +29,25 @@ const styles = StyleSheet.create({
   },
 
   newTodoContainer: {
+    flexDirection: 'row',
     borderBottomColor: '#e5e5e5',
     borderBottomWidth: 2,
-    paddingBottom: 16,
   },
 
   newTodoInput: {
-    borderRadius: 5,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingVertical: 20,
     paddingHorizontal: 32,
     fontSize: 20,
     fontFamily: 'barlow500',
   },
 
-  newTodoButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  newTodoButtonContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
 });
 

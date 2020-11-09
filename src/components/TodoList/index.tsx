@@ -1,15 +1,16 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { Feather as Icon } from '@expo/vector-icons';
-
 import {
   BorderlessButton,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
+
+import useTodos from './use-todos';
+
 import Todo from '../Todo';
 
 import styles from './styles';
-import useTodos from './use-todos';
 
 const TodoList: React.FC = () => {
   const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
@@ -29,6 +30,7 @@ const TodoList: React.FC = () => {
     newTodoInputRef.current?.blur();
 
     setNewTodo('');
+    setShowNewTodoInput(false);
   }, [addTodo, newTodo]);
 
   const handleDeleteTodo = useCallback(
@@ -78,13 +80,9 @@ const TodoList: React.FC = () => {
             blurOnSubmit
           />
 
-          <View style={styles.newTodoButtonsContainer}>
+          <View style={styles.newTodoButtonContainer}>
             <TouchableOpacity onPress={handleCreateTodo}>
-              <Icon name="check" size={28} color="#5afa5a" />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => newTodoInputRef.current?.blur()}>
-              <Icon name="x" size={28} color="#f15f5f" />
+              <Icon name="feather" size={28} color="#61d461" />
             </TouchableOpacity>
           </View>
         </View>
