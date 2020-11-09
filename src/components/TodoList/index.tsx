@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { Feather as Icon } from '@expo/vector-icons';
 import {
@@ -46,6 +46,14 @@ const TodoList: React.FC = () => {
     },
     [toggleTodo],
   );
+
+  useEffect(() => {
+    if (showNewTodoInput) {
+      newTodoInputRef.current?.focus();
+    } else {
+      newTodoInputRef.current?.blur();
+    }
+  }, [showNewTodoInput]);
 
   return (
     <View style={styles.container}>
