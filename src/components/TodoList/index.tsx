@@ -17,6 +17,11 @@ const TodoList: React.FC = () => {
   const newTodoInputRef = useRef<TextInput>(null);
 
   const [newTodo, setNewTodo] = useState('');
+  const [showNewTodoInput, setShowNewTodoInput] = useState(false);
+
+  const handleToggleNewTodoInputModal = useCallback(() => {
+    setShowNewTodoInput(current => !current);
+  }, []);
 
   const handleCreateTodo = useCallback(async () => {
     await addTodo({ text: newTodo });
@@ -46,33 +51,44 @@ const TodoList: React.FC = () => {
         <Text style={styles.title}>My tasks</Text>
 
         <BorderlessButton
-        // style={{ transform: [{ rotate: '45deg' }] }}
+          onPress={handleToggleNewTodoInputModal}
+          style={
+            showNewTodoInput && {
+              transform: [{ rotate: '45deg' }],
+            }
+          }
         >
-          <Icon size={36} name="plus" />
+          <Icon
+            size={36}
+            name="plus"
+            color={showNewTodoInput ? '#f15f5f' : '#000'}
+          />
         </BorderlessButton>
       </View>
 
-      <View style={styles.newTodoContainer}>
-        <TextInput
-          ref={newTodoInputRef}
-          style={styles.newTodoInput}
-          placeholder="New To-Do..."
-          value={newTodo}
-          onChangeText={setNewTodo}
-          multiline
-          blurOnSubmit
-        />
+      {showNewTodoInput && (
+        <View style={styles.newTodoContainer}>
+          <TextInput
+            ref={newTodoInputRef}
+            style={styles.newTodoInput}
+            placeholder="New To-Do..."
+            value={newTodo}
+            onChangeText={setNewTodo}
+            multiline
+            blurOnSubmit
+          />
 
-        <View style={styles.newTodoButtonsContainer}>
-          <TouchableOpacity onPress={handleCreateTodo}>
-            <Icon name="check" size={28} color="#5afa5a" />
-          </TouchableOpacity>
+          <View style={styles.newTodoButtonsContainer}>
+            <TouchableOpacity onPress={handleCreateTodo}>
+              <Icon name="check" size={28} color="#5afa5a" />
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => newTodoInputRef.current?.blur()}>
-            <Icon name="x" size={28} color="#f15f5f" />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => newTodoInputRef.current?.blur()}>
+              <Icon name="x" size={28} color="#f15f5f" />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      )}
 
       <View style={styles.todosContainer}>
         {todos.map(todo => (
