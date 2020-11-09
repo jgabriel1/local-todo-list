@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 
-import useTodos from './use-todos';
+import useTodos from './useTodos';
 
 import Todo from '../Todo';
 
