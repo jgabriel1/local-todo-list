@@ -14,6 +14,19 @@ const styles = StyleSheet.create({
     margin: 0,
   },
 
+  swipeableContainer: {
+    width: '100%',
+  },
+
+  deleteSwipeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    backgroundColor: '#ff4242',
+    borderBottomColor: '#efefef',
+    borderBottomWidth: 2,
+  },
+
   todoText: {
     flex: 1,
     fontSize: 18,

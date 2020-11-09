@@ -23,25 +23,16 @@ const Todo: React.FC<TodoProps> = ({
 }) => {
   return (
     <Swipeable
-      containerStyle={{ width: '100%' }}
+      containerStyle={styles.swipeableContainer}
       friction={1}
       useNativeAnimations
       renderRightActions={() => (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-            backgroundColor: '#ff4242',
-            borderBottomColor: '#efefef',
-            borderBottomWidth: 2,
-          }}
-        >
+        <View style={styles.deleteSwipeContainer}>
           <Feather
             name="trash-2"
             color="#fff"
             size={24}
-            style={{ marginRight: 24 }}
+            style={{ marginRight: 28 }}
           />
         </View>
       )}
