@@ -13,12 +13,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderBottomColor: '#efefef',
+    borderBottomColor: '#e5e5e5',
     borderBottomWidth: 2,
   },
 
   title: {
     fontSize: 32,
+    fontFamily: 'barlow600',
   },
 
   todosContainer: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   },
 
   newTodoContainer: {
-    borderBottomColor: '#efefef',
+    borderBottomColor: '#e5e5e5',
     borderBottomWidth: 2,
     paddingBottom: 16,
   },
@@ -40,7 +41,8 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 16,
     paddingHorizontal: 32,
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: 'barlow500',
   },
 
   newTodoButtonsContainer: {

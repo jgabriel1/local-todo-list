@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 84,
 
-    borderBottomColor: '#efefef',
+    borderBottomColor: '#e5e5e5',
     borderBottomWidth: 2,
 
     margin: 0,
@@ -23,15 +23,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     backgroundColor: '#ff4242',
-    borderBottomColor: '#efefef',
+    borderBottomColor: '#e5e5e5',
     borderBottomWidth: 2,
   },
 
   todoText: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 20,
     paddingHorizontal: 24,
     paddingVertical: 16,
+    fontFamily: 'barlow500',
   },
 
   checkboxContainer: {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     width: 76,
     height: '100%',
     minHeight: 84,
-    borderRightColor: '#efefef',
+    borderRightColor: '#e5e5e5',
     borderRightWidth: 2,
 
     justifyContent: 'center',
