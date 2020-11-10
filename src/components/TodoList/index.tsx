@@ -8,7 +8,7 @@ import {
 import Animated from 'react-native-reanimated';
 
 import useTodos from './useTodos';
-import useModalButtonAnimation from './useModalButtonAnimation';
+import useModalButtonAnimation from './animations/useModalButtonAnimation';
 
 import Todo from '../Todo';
 
