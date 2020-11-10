@@ -9,14 +9,22 @@ import Animated from 'react-native-reanimated';
 
 import useTodos from './useTodos';
 import useModalButtonAnimation from './animations/useModalButtonAnimation';
+import useInputDropAnimation from './animations/useInputDropAnimation';
+import useNewTodoSlideAnimation from './animations/useNewTodoSlideAnimation';
 
 import Todo from '../Todo';
 
 import styles from './styles';
-import useInputDropAnimation from './animations/useInputDropAnimation';
 
 const TodoList: React.FC = () => {
-  const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
+  const {
+    todos,
+    createdTodo,
+    addTodo,
+    addCreatedTodoToList,
+    deleteTodo,
+    toggleTodo,
+  } = useTodos();
 
   const newTodoInputRef = useRef<TextInput>(null);
 
@@ -33,14 +41,22 @@ const TodoList: React.FC = () => {
     startAnimation: triggerInputDropAnimation,
   } = useInputDropAnimation(showNewTodoInput);
 
+  const {
+    style: createdTodoAnimatedStyle,
+    startAnimation: triggerCreatedTodoSlideAnimation,
+  } = useNewTodoSlideAnimation(
+    // this callback will be executed right after the animation ends:
+    addCreatedTodoToList,
+  );
+
   const handleToggleNewTodoInputModal = useCallback(() => {
     setShowNewTodoInput(current => !current);
   }, []);
 
   const handleCreateTodo = useCallback(async () => {
-    await addTodo({ text: newTodo });
-
     newTodoInputRef.current?.blur();
+
+    await addTodo({ text: newTodo });
 
     setNewTodo('');
     setShowNewTodoInput(false);
@@ -70,6 +86,12 @@ const TodoList: React.FC = () => {
       newTodoInputRef.current?.blur();
     }
   }, [showNewTodoInput, triggerInputDropAnimation, triggerRotateAnimation]);
+
+  useEffect(() => {
+    if (createdTodo) {
+      triggerCreatedTodoSlideAnimation();
+    }
+  }, [createdTodo, triggerCreatedTodoSlideAnimation]);
 
   return (
     <View style={styles.container}>
@@ -114,6 +136,17 @@ const TodoList: React.FC = () => {
             handleToggleTodo={handleToggleTodo}
           />
         ))}
+
+        {createdTodo && (
+          <Animated.View style={[{ width: '100%' }, createdTodoAnimatedStyle]}>
+            <Todo
+              key={createdTodo.id}
+              {...createdTodo}
+              handleDeleteTodo={handleDeleteTodo}
+              handleToggleTodo={handleToggleTodo}
+            />
+          </Animated.View>
+        )}
       </View>
     </View>
   );
