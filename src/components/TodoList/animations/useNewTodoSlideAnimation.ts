@@ -9,14 +9,24 @@ import {
 
 const DEVICE_SCREEN_WIDTH = Dimensions.get('window').width;
 
-export default function useNewTodoSlideAnimation() {
+export default function useNewTodoSlideAnimation(
+  afterAnimationCallback: () => void,
+) {
   const translation = useSharedValue(DEVICE_SCREEN_WIDTH);
 
   const style = useAnimatedStyle(() => {
-    const marginRight = withTiming(translation.value, {
-      duration: 500,
-      easing: Easing.ease,
-    });
+    const marginRight = withTiming(
+      translation.value,
+      {
+        duration: 500,
+        easing: Easing.quad,
+      },
+      () => {
+        afterAnimationCallback();
+
+        translation.value = DEVICE_SCREEN_WIDTH;
+      },
+    );
 
     return {
       marginRight,
