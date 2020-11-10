@@ -5,8 +5,10 @@ import {
   BorderlessButton,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 
 import useTodos from './useTodos';
+import useModalButtonAnimation from './useModalButtonAnimation';
 
 import Todo from '../Todo';
 
@@ -14,6 +16,11 @@ import styles from './styles';
 
 const TodoList: React.FC = () => {
   const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
+
+  const {
+    buttonAnimatedStyle,
+    triggerRotateAnimation,
+  } = useModalButtonAnimation();
 
   const newTodoInputRef = useRef<TextInput>(null);
 
@@ -53,26 +60,23 @@ const TodoList: React.FC = () => {
     } else {
       newTodoInputRef.current?.blur();
     }
-  }, [showNewTodoInput]);
+
+    triggerRotateAnimation();
+  }, [showNewTodoInput, triggerRotateAnimation]);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>My tasks</Text>
 
-        <BorderlessButton
-          onPress={handleToggleNewTodoInputModal}
-          style={
-            showNewTodoInput && {
-              transform: [{ rotate: '45deg' }],
-            }
-          }
-        >
-          <Icon
-            size={36}
-            name="plus"
-            color={showNewTodoInput ? '#f15f5f' : '#000'}
-          />
+        <BorderlessButton onPress={handleToggleNewTodoInputModal}>
+          <Animated.View style={buttonAnimatedStyle}>
+            <Icon
+              size={36}
+              name="plus"
+              color={showNewTodoInput ? '#f15f5f' : '#000'}
+            />
+          </Animated.View>
         </BorderlessButton>
       </View>
 
