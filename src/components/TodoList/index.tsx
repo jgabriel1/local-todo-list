@@ -23,8 +23,8 @@ const TodoList: React.FC = () => {
   const [showNewTodoInput, setShowNewTodoInput] = useState(false);
 
   const {
-    buttonAnimatedStyle,
-    triggerRotateAnimation,
+    style: buttonAnimatedStyle,
+    startAnimation: triggerRotateAnimation,
   } = useModalButtonAnimation(showNewTodoInput);
 
   const handleToggleNewTodoInputModal = useCallback(() => {
