@@ -54,9 +54,9 @@ const TodoList: React.FC = () => {
   }, []);
 
   const handleCreateTodo = useCallback(async () => {
-    await addTodo({ text: newTodo });
-
     newTodoInputRef.current?.blur();
+
+    await addTodo({ text: newTodo });
 
     setNewTodo('');
     setShowNewTodoInput(false);
