@@ -9,11 +9,11 @@ import Animated from 'react-native-reanimated';
 
 import useTodos from './useTodos';
 import useModalButtonAnimation from './animations/useModalButtonAnimation';
+import useInputDropAnimation from './animations/useInputDropAnimation';
 
 import Todo from '../Todo';
 
 import styles from './styles';
-import useInputDropAnimation from './animations/useInputDropAnimation';
 
 const TodoList: React.FC = () => {
   const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
