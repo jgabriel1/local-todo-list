@@ -17,15 +17,15 @@ import styles from './styles';
 const TodoList: React.FC = () => {
   const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
 
-  const {
-    buttonAnimatedStyle,
-    triggerRotateAnimation,
-  } = useModalButtonAnimation();
-
   const newTodoInputRef = useRef<TextInput>(null);
 
   const [newTodo, setNewTodo] = useState('');
   const [showNewTodoInput, setShowNewTodoInput] = useState(false);
+
+  const {
+    buttonAnimatedStyle,
+    triggerRotateAnimation,
+  } = useModalButtonAnimation(showNewTodoInput);
 
   const handleToggleNewTodoInputModal = useCallback(() => {
     setShowNewTodoInput(current => !current);
@@ -55,13 +55,13 @@ const TodoList: React.FC = () => {
   );
 
   useEffect(() => {
+    triggerRotateAnimation();
+
     if (showNewTodoInput) {
       newTodoInputRef.current?.focus();
     } else {
       newTodoInputRef.current?.blur();
     }
-
-    triggerRotateAnimation();
   }, [showNewTodoInput, triggerRotateAnimation]);
 
   return (

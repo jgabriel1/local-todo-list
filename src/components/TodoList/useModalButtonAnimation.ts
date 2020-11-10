@@ -1,18 +1,21 @@
-import { useCallback } from 'react';
-import {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import { useCallback, useMemo } from 'react';
+import Animated, { EasingNode, useValue } from 'react-native-reanimated';
 
-export default function useModalButtonAnimation() {
-  const buttonRotationAngle = useSharedValue(0);
+export default function useModalButtonAnimation(showNewTodoInput: boolean) {
+  const buttonRotationAngle = useValue(0);
 
-  const buttonAnimatedStyle = useAnimatedStyle(() => {
-    const rotate = withTiming(buttonRotationAngle.value, {
-      duration: 800,
-      easing: Easing.bounce,
+  const triggerRotateAnimation = useCallback(() => {
+    Animated.timing(buttonRotationAngle, {
+      toValue: showNewTodoInput ? 1 : 0,
+      duration: 750,
+      easing: EasingNode.bounce,
+    }).start();
+  }, [buttonRotationAngle, showNewTodoInput]);
+
+  const buttonAnimatedStyle = useMemo(() => {
+    const rotate = buttonRotationAngle.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, Math.PI * (3 / 4)],
     });
 
     const transform = [{ rotate }];
@@ -20,12 +23,7 @@ export default function useModalButtonAnimation() {
     return {
       transform,
     };
-  });
-
-  const triggerRotateAnimation = useCallback(() => {
-    buttonRotationAngle.value =
-      buttonRotationAngle.value === 0 ? Math.PI * (3 / 4) : 0;
-  }, [buttonRotationAngle.value]);
+  }, [buttonRotationAngle]);
 
   return {
     buttonAnimatedStyle,
