@@ -13,6 +13,7 @@ import useModalButtonAnimation from './animations/useModalButtonAnimation';
 import Todo from '../Todo';
 
 import styles from './styles';
+import useInputDropAnimation from './animations/useInputDropAnimation';
 
 const TodoList: React.FC = () => {
   const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
@@ -26,6 +27,11 @@ const TodoList: React.FC = () => {
     style: buttonAnimatedStyle,
     startAnimation: triggerRotateAnimation,
   } = useModalButtonAnimation(showNewTodoInput);
+
+  const {
+    style: inputDropAnimationStyle,
+    startAnimation: triggerInputDropAnimation,
+  } = useInputDropAnimation(showNewTodoInput);
 
   const handleToggleNewTodoInputModal = useCallback(() => {
     setShowNewTodoInput(current => !current);
@@ -56,13 +62,14 @@ const TodoList: React.FC = () => {
 
   useEffect(() => {
     triggerRotateAnimation();
+    triggerInputDropAnimation();
 
     if (showNewTodoInput) {
       newTodoInputRef.current?.focus();
     } else {
       newTodoInputRef.current?.blur();
     }
-  }, [showNewTodoInput, triggerRotateAnimation]);
+  }, [showNewTodoInput, triggerInputDropAnimation, triggerRotateAnimation]);
 
   return (
     <View style={styles.container}>
@@ -80,25 +87,23 @@ const TodoList: React.FC = () => {
         </BorderlessButton>
       </View>
 
-      {showNewTodoInput && (
-        <View style={styles.newTodoContainer}>
-          <TextInput
-            ref={newTodoInputRef}
-            style={styles.newTodoInput}
-            placeholder="New To-Do..."
-            value={newTodo}
-            onChangeText={setNewTodo}
-            multiline
-            blurOnSubmit
-          />
+      <Animated.View style={[styles.newTodoContainer, inputDropAnimationStyle]}>
+        <TextInput
+          ref={newTodoInputRef}
+          style={styles.newTodoInput}
+          placeholder="New To-Do..."
+          value={newTodo}
+          onChangeText={setNewTodo}
+          multiline
+          blurOnSubmit
+        />
 
-          <View style={styles.newTodoButtonContainer}>
-            <TouchableOpacity onPress={handleCreateTodo}>
-              <Icon name="feather" size={28} color="#61d461" />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.newTodoButtonContainer}>
+          <TouchableOpacity onPress={handleCreateTodo}>
+            <Icon name="feather" size={28} color="#61d461" />
+          </TouchableOpacity>
         </View>
-      )}
+      </Animated.View>
 
       <View style={styles.todosContainer}>
         {todos.map(todo => (
