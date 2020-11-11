@@ -2,18 +2,25 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 30,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
   },
 
   header: {
-    height: 128,
-    justifyContent: 'flex-end',
-    marginBottom: 32,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
+    paddingTop: 96,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomColor: '#e5e5e5',
+    borderBottomWidth: 2,
+    backgroundColor: '#fff',
   },
 
   title: {
     fontSize: 32,
+    fontFamily: 'barlow600',
   },
 
   todosContainer: {
@@ -23,17 +30,29 @@ const styles = StyleSheet.create({
   },
 
   newTodoContainer: {
-    marginBottom: 32,
+    flexDirection: 'row',
+    borderBottomColor: '#e5e5e5',
+    borderBottomWidth: 2,
+
+    zIndex: -5,
+    elevation: -5,
   },
 
   newTodoInput: {
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#888',
-    borderRadius: 5,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    fontSize: 18,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 24,
+    paddingBottom: 24,
+    paddingHorizontal: 32,
+    fontSize: 20,
+    fontFamily: 'barlow500',
+  },
+
+  newTodoButtonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
 });
 

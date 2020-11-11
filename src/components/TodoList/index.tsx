@@ -1,18 +1,65 @@
-import React, { useCallback, useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, Text, TextInput } from 'react-native';
+import { Feather as Icon } from '@expo/vector-icons';
+import {
+  BorderlessButton,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
+
+import useTodos from './useTodos';
+import useModalButtonAnimation from './animations/useModalButtonAnimation';
+import useInputDropAnimation from './animations/useInputDropAnimation';
+import useNewTodoSlideAnimation from './animations/useNewTodoSlideAnimation';
 
 import Todo from '../Todo';
 
 import styles from './styles';
-import useTodos from './use-todos';
 
 const TodoList: React.FC = () => {
-  const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
+  const {
+    todos,
+    createdTodo,
+    addTodo,
+    addCreatedTodoToList,
+    deleteTodo,
+    toggleTodo,
+  } = useTodos();
+
+  const newTodoInputRef = useRef<TextInput>(null);
 
   const [newTodo, setNewTodo] = useState('');
+  const [showNewTodoInput, setShowNewTodoInput] = useState(false);
+
+  const {
+    style: buttonAnimatedStyle,
+    startAnimation: triggerRotateAnimation,
+  } = useModalButtonAnimation(showNewTodoInput);
+
+  const {
+    style: inputDropAnimationStyle,
+    startAnimation: triggerInputDropAnimation,
+  } = useInputDropAnimation(showNewTodoInput);
+
+  const {
+    style: createdTodoAnimatedStyle,
+    startAnimation: triggerCreatedTodoSlideAnimation,
+  } = useNewTodoSlideAnimation(
+    // this callback will be executed right after the animation ends:
+    addCreatedTodoToList,
+  );
+
+  const handleToggleNewTodoInputModal = useCallback(() => {
+    setShowNewTodoInput(current => !current);
+  }, []);
 
   const handleCreateTodo = useCallback(async () => {
+    newTodoInputRef.current?.blur();
+
     await addTodo({ text: newTodo });
+
+    setNewTodo('');
+    setShowNewTodoInput(false);
   }, [addTodo, newTodo]);
 
   const handleDeleteTodo = useCallback(
@@ -29,21 +76,56 @@ const TodoList: React.FC = () => {
     [toggleTodo],
   );
 
+  useEffect(() => {
+    triggerRotateAnimation();
+    triggerInputDropAnimation();
+
+    if (showNewTodoInput) {
+      newTodoInputRef.current?.focus();
+    } else {
+      newTodoInputRef.current?.blur();
+    }
+  }, [showNewTodoInput, triggerInputDropAnimation, triggerRotateAnimation]);
+
+  useEffect(() => {
+    if (createdTodo) {
+      triggerCreatedTodoSlideAnimation();
+    }
+  }, [createdTodo, triggerCreatedTodoSlideAnimation]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>My todo list</Text>
+        <Text style={styles.title}>My tasks</Text>
+
+        <BorderlessButton onPress={handleToggleNewTodoInputModal}>
+          <Animated.View style={buttonAnimatedStyle}>
+            <Icon
+              size={36}
+              name="plus"
+              color={showNewTodoInput ? '#f15f5f' : '#000'}
+            />
+          </Animated.View>
+        </BorderlessButton>
       </View>
 
-      <View style={styles.newTodoContainer}>
+      <Animated.View style={[styles.newTodoContainer, inputDropAnimationStyle]}>
         <TextInput
+          ref={newTodoInputRef}
           style={styles.newTodoInput}
           placeholder="New To-Do..."
           value={newTodo}
           onChangeText={setNewTodo}
+          multiline
+          blurOnSubmit
         />
-        <Button title="Add Todo" onPress={handleCreateTodo} />
-      </View>
+
+        <View style={styles.newTodoButtonContainer}>
+          <TouchableOpacity onPress={handleCreateTodo}>
+            <Icon name="feather" size={28} color="#61d461" />
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
 
       <View style={styles.todosContainer}>
         {todos.map(todo => (
@@ -54,6 +136,17 @@ const TodoList: React.FC = () => {
             handleToggleTodo={handleToggleTodo}
           />
         ))}
+
+        {createdTodo && (
+          <Animated.View style={[{ width: '100%' }, createdTodoAnimatedStyle]}>
+            <Todo
+              key={createdTodo.id}
+              {...createdTodo}
+              handleDeleteTodo={handleDeleteTodo}
+              handleToggleTodo={handleToggleTodo}
+            />
+          </Animated.View>
+        )}
       </View>
     </View>
   );
