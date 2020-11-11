@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+
+import useTextFadeAnimation from './animations/useTextFadeAnimation';
 
 import TodoCheckbox from '../TodoCheckbox';
 
@@ -22,6 +25,8 @@ const Todo: React.FC<TodoProps> = ({
   handleDeleteTodo,
   handleToggleTodo,
 }) => {
+  const { style: textOpacityAnimatedStyle } = useTextFadeAnimation(status);
+
   return (
     <Swipeable
       containerStyle={styles.swipeableContainer}
@@ -44,9 +49,9 @@ const Todo: React.FC<TodoProps> = ({
         <View style={styles.checkboxContainer}>
           <TodoCheckbox value={status} onToggle={() => handleToggleTodo(id)} />
         </View>
-        <Text style={[styles.todoText, status && { opacity: 0.3 }]}>
+        <Animated.Text style={[styles.todoText, textOpacityAnimatedStyle]}>
           {text}
-        </Text>
+        </Animated.Text>
       </View>
     </Swipeable>
   );

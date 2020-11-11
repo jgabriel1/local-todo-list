@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomColor: '#e5e5e5',
     borderBottomWidth: 2,
+    backgroundColor: '#fff',
   },
 
   title: {
@@ -32,14 +33,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomColor: '#e5e5e5',
     borderBottomWidth: 2,
+
+    zIndex: -5,
+    elevation: -5,
   },
 
   newTodoInput: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingTop: 24,
+    paddingBottom: 24,
     paddingHorizontal: 32,
     fontSize: 20,
     fontFamily: 'barlow500',
