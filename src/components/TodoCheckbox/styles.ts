@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
+  icon: {
+    height: 75,
+    width: 75,
   },
 });
 

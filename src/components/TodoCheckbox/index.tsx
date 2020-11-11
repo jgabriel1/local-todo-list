@@ -13,7 +13,7 @@ interface TodoCheckboxProps {
 }
 
 interface TodoCheckboxState {
-  progress: Animated.Value;
+  animationProgress: Animated.Value;
 }
 
 class TodoCheckbox extends React.Component<
@@ -26,17 +26,19 @@ class TodoCheckbox extends React.Component<
     const { value } = this.props;
 
     this.state = {
-      progress: new Animated.Value(value ? 0.75 : 0.35),
+      animationProgress: new Animated.Value(value ? 0.75 : 0.35),
     };
   }
 
   playAnimation = () => {
-    const { progress } = this.state;
+    const { animationProgress } = this.state;
     const { value } = this.props;
 
-    Animated.timing(progress, {
-      toValue: value ? 0.35 : 0.75,
-      duration: 500,
+    const toValue = value ? 0.35 : 0.75;
+
+    Animated.timing(animationProgress, {
+      toValue,
+      duration: 400,
       easing: Easing.linear,
       useNativeDriver: true,
     }).start();
@@ -50,20 +52,16 @@ class TodoCheckbox extends React.Component<
   };
 
   render() {
-    const { progress } = this.state;
+    const { animationProgress } = this.state;
 
     return (
-      <BorderlessButton
-        onPress={this.toggleCheckbox}
-        style={[styles.container, { padding: 0 }]}
-      >
+      <BorderlessButton onPress={this.toggleCheckbox}>
         <Lottie
           source={checkAnimation}
-          style={{ height: 75, width: 75 }}
+          style={styles.icon}
           resizeMode="contain"
           autoSize
-          duration={2000}
-          progress={progress}
+          progress={animationProgress}
         />
       </BorderlessButton>
     );
