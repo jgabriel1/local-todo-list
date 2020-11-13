@@ -41,6 +41,6 @@ export class TodosRepository {
   }
 
   public async delete(todoId: number): Promise<void> {
-    await this.queryRunner.query('DELETE FROM todos WHERE id = ?;', [todoId]);
+    await this.ormRepository.delete(todoId);
   }
 }
