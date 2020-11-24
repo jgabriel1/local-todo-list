@@ -9,6 +9,9 @@ export class TodoListModel {
   @Column()
   name: string;
 
-  @OneToMany(() => TodoModel, todo => todo.list, { eager: true })
+  @OneToMany(() => TodoModel, todo => todo.list, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   todos: TodoModel[];
 }
