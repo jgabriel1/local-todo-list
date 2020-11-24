@@ -33,4 +33,8 @@ export class TodoListsRepository {
 
     return list || null;
   }
+
+  public async delete(listId: number): Promise<void> {
+    await this.ormRepository.delete(listId);
+  }
 }

@@ -61,6 +61,15 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
     ]);
   }, [newListName, todoListsRepository]);
 
+  const handleDeleteList = useCallback(
+    async (deletedId: number) => {
+      await todoListsRepository.delete(deletedId);
+
+      setLists(current => current.filter(list => list.id !== deletedId));
+    },
+    [todoListsRepository],
+  );
+
   useEffect(() => {
     todoListsRepository.getAll().then(setLists);
   }, [todoListsRepository]);
@@ -81,11 +90,17 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
           <TouchableNativeFeedback
             key={list.id}
             style={styles.todoListItem}
-            onPress={() => navigateToList(list.id)}
+            onPress={
+              // () => navigateToList(list.id)
+
+              // temporarily deleting here:
+              () => handleDeleteList(list.id)
+            }
           >
             <Text style={styles.todoListItemName}>{list.name}</Text>
-            {list.todos.map(todo => (
+            {list.todos.map((todo, index) => (
               <Text
+                key={String(index)}
                 style={[
                   styles.todoListTodoText,
                   todo.status && styles.todoListTodoIsCompleted,
