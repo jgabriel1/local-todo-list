@@ -6,7 +6,7 @@ import {
   Barlow_600SemiBold,
 } from '@expo-google-fonts/barlow';
 
-import TodoList from './components/TodoList';
+import Routes from './routes';
 
 import { DatabaseConnectionProvider } from './data/connection';
 
@@ -24,7 +24,7 @@ const App: React.FC = () => {
     <>
       <StatusBar style="dark" />
       <DatabaseConnectionProvider>
-        <TodoList />
+        <Routes />
       </DatabaseConnectionProvider>
     </>
   );
