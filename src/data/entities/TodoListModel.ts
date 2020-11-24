@@ -9,6 +9,6 @@ export class TodoListModel {
   @Column()
   name: string;
 
-  @OneToMany(() => TodoModel, todo => todo.list)
+  @OneToMany(() => TodoModel, todo => todo.list, { eager: true })
   todos: TodoModel[];
 }
