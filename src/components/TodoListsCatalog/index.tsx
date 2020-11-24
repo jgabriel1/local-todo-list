@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, Text, TextInput } from 'react-native';
 import {
-  TextInput,
+  BorderlessButton,
   TouchableNativeFeedback,
 } from 'react-native-gesture-handler';
+import { Feather as Icon } from '@expo/vector-icons';
 
 import { useDatabaseConnection } from '../../data/connection';
 
@@ -45,6 +46,8 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
   const [lists, setLists] = useState<List[]>([]);
   const [newListName, setNewListName] = useState('');
 
+  const newListInputRef = useRef<TextInput>(null);
+
   const handleCreateList = useCallback(async () => {
     if (!newListName) return;
 
@@ -52,6 +55,7 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
       name: newListName,
     });
 
+    setNewListName('');
     setLists(current => [
       ...current,
 
@@ -59,6 +63,8 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
       // be directly assigned here. The interface will break otherwise:
       Object.assign(newList, { todos: [] }),
     ]);
+
+    newListInputRef.current?.blur();
   }, [newListName, todoListsRepository]);
 
   const handleDeleteList = useCallback(
@@ -76,13 +82,26 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>My To-Do Lists</Text>
+      </View>
+
       <View style={styles.createListContainer}>
-        <Text style={styles.createListLabel}>New To-Do List</Text>
         <TextInput
+          ref={newListInputRef}
+          placeholder="Create a new list..."
           style={styles.createListInput}
+          value={newListName}
           onChangeText={setNewListName}
+          multiline
         />
-        <Button onPress={handleCreateList} title="Submit" />
+
+        <BorderlessButton
+          onPress={handleCreateList}
+          style={styles.createListButtonContainer}
+        >
+          <Icon name="plus" size={32} color="#61d461" />
+        </BorderlessButton>
       </View>
 
       <View style={styles.catalogContainer}>
@@ -91,10 +110,10 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
             key={list.id}
             style={styles.todoListItem}
             onPress={
-              // () => navigateToList(list.id)
+              () => navigateToList(list.id)
 
               // temporarily deleting here:
-              () => handleDeleteList(list.id)
+              // () => handleDeleteList(list.id)
             }
           >
             <Text style={styles.todoListItemName}>{list.name}</Text>
