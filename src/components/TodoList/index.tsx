@@ -106,6 +106,10 @@ const TodoList: React.FC<TodoListProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <BorderlessButton style={styles.returnButton} onPress={returnToCatalog}>
+          <Icon size={32} name="chevron-left" color="#000" />
+        </BorderlessButton>
+
         <Text style={styles.title}>{listName}</Text>
 
         <BorderlessButton onPress={handleToggleNewTodoInputModal}>
