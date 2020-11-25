@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, ScrollView } from 'react-native';
+import { View, Text, TextInput, ScrollView, Alert } from 'react-native';
 import {
   BorderlessButton,
   TouchableNativeFeedback,
@@ -21,6 +21,11 @@ interface List {
 
 interface TodoListsCatalogProps {
   navigateToList: (listId: number) => void;
+}
+
+interface HandleDeleteListParams {
+  name: string;
+  deletedId: number;
 }
 
 const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
@@ -54,10 +59,29 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
   }, [newListName, todoListsRepository]);
 
   const handleDeleteList = useCallback(
-    async (deletedId: number) => {
-      await todoListsRepository.delete(deletedId);
+    async ({ deletedId, name }: HandleDeleteListParams) => {
+      const onPressConfirm = async () => {
+        await todoListsRepository.delete(deletedId);
 
-      setLists(current => current.filter(list => list.id !== deletedId));
+        setLists(current => current.filter(list => list.id !== deletedId));
+      };
+
+      Alert.alert(
+        `Delete "${name}" list.`,
+        'Are you sure you want to delete this list?',
+        [
+          {
+            text: 'Yes',
+            onPress: onPressConfirm,
+            style: 'default',
+          },
+          {
+            text: 'No',
+            onPress: () => null,
+            style: 'cancel',
+          },
+        ],
+      );
     },
     [todoListsRepository],
   );
@@ -108,8 +132,11 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
           <TouchableNativeFeedback
             key={list.id}
             style={styles.todoListItem}
-            onPress={() => navigateToList(list.id)}
             containerStyle={styles.todoListItemContainer}
+            onPress={() => navigateToList(list.id)}
+            onLongPress={() =>
+              handleDeleteList({ deletedId: list.id, name: list.name })
+            }
           >
             <View style={{ flex: 1 }}>
               <Text style={styles.todoListItemName}>{list.name}</Text>
