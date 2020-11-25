@@ -16,7 +16,17 @@ import Todo from '../Todo';
 
 import styles from './styles';
 
-const TodoList: React.FC = () => {
+interface TodoListProps {
+  listId: number;
+  listName: string;
+  returnToCatalog: () => void;
+}
+
+const TodoList: React.FC<TodoListProps> = ({
+  listId,
+  listName,
+  returnToCatalog,
+}) => {
   const {
     todos,
     createdTodo,
@@ -96,7 +106,7 @@ const TodoList: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>My tasks</Text>
+        <Text style={styles.title}>{listName}</Text>
 
         <BorderlessButton onPress={handleToggleNewTodoInputModal}>
           <Animated.View style={buttonAnimatedStyle}>
