@@ -2,21 +2,30 @@ import React, { useCallback, useState } from 'react';
 import TodoList from './components/TodoList';
 import TodoListsCatalog from './components/TodoListsCatalog';
 
-const Routes: React.FC = () => {
-  const [selectedListId, setSelectedListId] = useState(0);
+interface SelectedList {
+  id: number;
+  name: string;
+}
 
-  const navigateToList = useCallback((id: number) => {
-    setSelectedListId(id);
+const Routes: React.FC = () => {
+  const [selectedList, setSelectedList] = useState<SelectedList | null>(null);
+
+  const navigateToList = useCallback((id: number, name: string) => {
+    setSelectedList({ id, name });
   }, []);
 
   const returnToCatalog = useCallback(() => {
-    setSelectedListId(0);
+    setSelectedList(null);
   }, []);
 
   return (
     <>
-      {selectedListId ? (
-        <TodoList />
+      {selectedList ? (
+        <TodoList
+          listId={selectedList.id}
+          listName={selectedList.name}
+          returnToCatalog={returnToCatalog}
+        />
       ) : (
         <TodoListsCatalog navigateToList={navigateToList} />
       )}

@@ -20,7 +20,7 @@ interface List {
 }
 
 interface TodoListsCatalogProps {
-  navigateToList: (listId: number) => void;
+  navigateToList: (listId: number, listName: string) => void;
 }
 
 interface HandleDeleteListParams {
@@ -133,7 +133,7 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
             key={list.id}
             style={styles.todoListItem}
             containerStyle={styles.todoListItemContainer}
-            onPress={() => navigateToList(list.id)}
+            onPress={() => navigateToList(list.id, list.name)}
             onLongPress={() =>
               handleDeleteList({ deletedId: list.id, name: list.name })
             }
