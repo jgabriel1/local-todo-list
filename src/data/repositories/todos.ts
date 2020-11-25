@@ -33,8 +33,10 @@ export class TodosRepository {
     return todo;
   }
 
-  public async getAll(): Promise<TodoModel[]> {
-    const todos = await this.ormRepository.find();
+  public async getAllByListId(list_id?: number): Promise<TodoModel[]> {
+    const todos = await this.ormRepository.find({
+      list_id: list_id || 0,
+    });
 
     return todos;
   }
