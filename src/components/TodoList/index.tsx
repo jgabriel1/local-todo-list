@@ -34,7 +34,7 @@ const TodoList: React.FC<TodoListProps> = ({
     addCreatedTodoToList,
     deleteTodo,
     toggleTodo,
-  } = useTodos();
+  } = useTodos(listId);
 
   const newTodoInputRef = useRef<TextInput>(null);
 
