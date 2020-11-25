@@ -19,21 +19,6 @@ interface List {
   }>;
 }
 
-/*
-  * has a list of all todo lists, somehow showing some (top 3) of the todos in
-  them;
-
-  * list is clickable and the list component, which is already up and running,
-  will be rendered (initially i wanna try to do this without routing)
-
-  * the list component will recieve just the id and load all todos to be rendered
-  by itself
-
-  * to achieve item 2, there will be a context wrapping both catalog and list
-  components that will hold the id of the currently selected list. Said id may be
-  null, in which case the catalog component will be shown;
-*/
-
 interface TodoListsCatalogProps {
   navigateToList: (listId: number) => void;
 }
@@ -47,6 +32,7 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
   const [newListName, setNewListName] = useState('');
 
   const newListInputRef = useRef<TextInput>(null);
+  const catalogScrollViewRef = useRef<ScrollView>(null);
 
   const handleCreateList = useCallback(async () => {
     if (!newListName) return;
@@ -80,6 +66,14 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
     todoListsRepository.getAll().then(setLists);
   }, [todoListsRepository]);
 
+  useEffect(() => {
+    if (lists.length !== 0) {
+      catalogScrollViewRef.current?.scrollToEnd({
+        animated: true,
+      });
+    }
+  }, [lists]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -105,32 +99,41 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
       </View>
 
       <ScrollView
+        ref={catalogScrollViewRef}
         contentContainerStyle={styles.catalogContainer}
-        showsVerticalScrollIndicator={false}
+        horizontal
+        showsHorizontalScrollIndicator={false}
       >
         {lists.map(list => (
           <TouchableNativeFeedback
             key={list.id}
             style={styles.todoListItem}
-            onPress={
-              () => navigateToList(list.id)
-
-              // temporarily deleting here:
-              // () => handleDeleteList(list.id)
-            }
+            onPress={() => navigateToList(list.id)}
+            containerStyle={styles.todoListItemContainer}
           >
-            <Text style={styles.todoListItemName}>{list.name}</Text>
-            {list.todos.map((todo, index) => (
-              <Text
-                key={String(index)}
-                style={[
-                  styles.todoListTodoText,
-                  todo.status && styles.todoListTodoIsCompleted,
-                ]}
-              >
-                {todo}
-              </Text>
-            ))}
+            <View style={{ flex: 1 }}>
+              <Text style={styles.todoListItemName}>{list.name}</Text>
+
+              <View style={styles.todoListItemTodosContainer}>
+                {list.todos.length > 0 ? (
+                  list.todos.map((todo, index) => (
+                    <Text
+                      key={String(index)}
+                      style={[
+                        styles.todoListTodoText,
+                        todo.status && styles.todoListTodoIsCompleted,
+                      ]}
+                    >
+                      {todo.text}
+                    </Text>
+                  ))
+                ) : (
+                  <Text style={styles.todoListItemTodosPlaceholder}>
+                    Press to start adding items...
+                  </Text>
+                )}
+              </View>
+            </View>
           </TouchableNativeFeedback>
         ))}
       </ScrollView>

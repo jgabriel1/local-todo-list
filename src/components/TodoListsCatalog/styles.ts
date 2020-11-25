@@ -53,29 +53,55 @@ const styles = StyleSheet.create({
   },
 
   catalogContainer: {
-    flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingVertical: 60,
-    paddingHorizontal: 20,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingBottom: 40,
+  },
+
+  todoListItemContainer: {
+    marginHorizontal: 10,
+    marginBottom: 20,
   },
 
   todoListItem: {
     borderWidth: 2,
     borderColor: '#e5e5e5',
+    height: 320,
+    width: SCREEN_WIDTH / 2 - 30,
 
-    marginHorizontal: 20,
-    marginBottom: 20,
+    paddingVertical: 32,
+    paddingHorizontal: 16,
 
-    height: 240,
-    width: SCREEN_WIDTH / 2 - 60,
+    borderRadius: 20,
   },
 
-  todoListItemName: {},
+  todoListItemName: {
+    fontFamily: 'barlow600',
+    fontSize: 24,
+  },
 
-  todoListTodoText: {},
+  todoListItemTodosContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
 
-  todoListTodoIsCompleted: {},
+  todoListTodoText: {
+    fontFamily: 'barlow500',
+    fontSize: 20,
+    marginBottom: 8,
+  },
+
+  todoListTodoIsCompleted: {
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+  },
+
+  todoListItemTodosPlaceholder: {
+    fontFamily: 'barlow500',
+    fontSize: 15,
+    color: '#a5a5a5',
+  },
 });
 
 export default styles;
