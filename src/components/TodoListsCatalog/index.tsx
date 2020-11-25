@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import {
   BorderlessButton,
   TouchableNativeFeedback,
@@ -104,7 +104,10 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
         </BorderlessButton>
       </View>
 
-      <View style={styles.catalogContainer}>
+      <ScrollView
+        contentContainerStyle={styles.catalogContainer}
+        showsVerticalScrollIndicator={false}
+      >
         {lists.map(list => (
           <TouchableNativeFeedback
             key={list.id}
@@ -130,7 +133,7 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
             ))}
           </TouchableNativeFeedback>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };

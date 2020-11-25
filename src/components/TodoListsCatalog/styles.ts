@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
@@ -50,9 +52,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
-  catalogContainer: {},
+  catalogContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingVertical: 60,
+    paddingHorizontal: 20,
+  },
 
-  todoListItem: {},
+  todoListItem: {
+    borderWidth: 2,
+    borderColor: '#e5e5e5',
+
+    marginHorizontal: 20,
+    marginBottom: 20,
+
+    height: 240,
+    width: SCREEN_WIDTH / 2 - 60,
+  },
 
   todoListItemName: {},
 
