@@ -6,18 +6,9 @@ import {
 } from 'react-native-gesture-handler';
 import { Feather as Icon } from '@expo/vector-icons';
 
-import { useDatabaseConnection } from '../../data/connection';
+import useTodoLists from './useTodoLists';
 
 import styles from './styles';
-
-interface List {
-  id: number;
-  name: string;
-  todos: Array<{
-    text: string;
-    status: boolean;
-  }>;
-}
 
 interface TodoListsCatalogProps {
   navigateToList: (listId: number, listName: string) => void;
@@ -31,9 +22,8 @@ interface HandleDeleteListParams {
 const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
   navigateToList,
 }) => {
-  const { todoListsRepository } = useDatabaseConnection();
+  const { lists, addTodoList, deleteTodoList } = useTodoLists();
 
-  const [lists, setLists] = useState<List[]>([]);
   const [newListName, setNewListName] = useState('');
 
   const newListInputRef = useRef<TextInput>(null);
@@ -42,28 +32,17 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
   const handleCreateList = useCallback(async () => {
     if (!newListName) return;
 
-    const newList = await todoListsRepository.create({
-      name: newListName,
-    });
+    await addTodoList({ name: newListName });
 
     setNewListName('');
-    setLists(current => [
-      ...current,
-
-      // TypeORM returns the created object todos prop as undefined, it has to
-      // be directly assigned here. The interface will break otherwise:
-      Object.assign(newList, { todos: [] }),
-    ]);
 
     newListInputRef.current?.blur();
-  }, [newListName, todoListsRepository]);
+  }, [addTodoList, newListName]);
 
   const handleDeleteList = useCallback(
     async ({ deletedId, name }: HandleDeleteListParams) => {
       const onPressConfirm = async () => {
-        await todoListsRepository.delete(deletedId);
-
-        setLists(current => current.filter(list => list.id !== deletedId));
+        await deleteTodoList(deletedId);
       };
 
       Alert.alert(
@@ -83,12 +62,8 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
         ],
       );
     },
-    [todoListsRepository],
+    [deleteTodoList],
   );
-
-  useEffect(() => {
-    todoListsRepository.getAll().then(setLists);
-  }, [todoListsRepository]);
 
   useEffect(() => {
     if (lists.length !== 0) {
