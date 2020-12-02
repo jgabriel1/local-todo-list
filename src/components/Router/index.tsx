@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import TodoList from './components/TodoList';
-import TodoListsCatalog from './components/TodoListsCatalog';
+import TodoList from '../TodoList';
+import TodoListsCatalog from '../TodoListsCatalog';
 
 interface SelectedList {
   id: number;

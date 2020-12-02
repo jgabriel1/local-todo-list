@@ -6,7 +6,7 @@ import {
   Barlow_600SemiBold,
 } from '@expo-google-fonts/barlow';
 
-import Routes from './routes';
+import Routes from './components/Router';
 
 import { DatabaseConnectionProvider } from './data/connection';
 
