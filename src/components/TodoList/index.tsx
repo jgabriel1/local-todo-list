@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Feather as Icon } from '@expo/vector-icons';
 import {
   BorderlessButton,
@@ -7,6 +8,7 @@ import {
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
+import { useSelectedList } from '../../hooks/selectedList';
 import useTodos from './useTodos';
 import useModalButtonAnimation from './animations/useModalButtonAnimation';
 import useInputDropAnimation from './animations/useInputDropAnimation';
@@ -16,17 +18,14 @@ import Todo from '../Todo';
 
 import styles from './styles';
 
-interface TodoListProps {
-  listId: number;
-  listName: string;
-  returnToCatalog: () => void;
-}
+const TodoList: React.FC = () => {
+  const navigation = useNavigation();
 
-const TodoList: React.FC<TodoListProps> = ({
-  listId,
-  listName,
-  returnToCatalog,
-}) => {
+  const {
+    selectedListId: listId,
+    selectedListName: listName,
+  } = useSelectedList();
+
   const {
     todos,
     createdTodo,
@@ -58,6 +57,10 @@ const TodoList: React.FC<TodoListProps> = ({
     // this callback will be executed right after the animation ends:
     addCreatedTodoToList,
   );
+
+  const handleReturnToCatalog = useCallback(() => {
+    navigation.navigate('TodoListsCatalog');
+  }, [navigation]);
 
   const handleToggleNewTodoInputModal = useCallback(() => {
     setShowNewTodoInput(current => !current);
@@ -106,7 +109,10 @@ const TodoList: React.FC<TodoListProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <BorderlessButton style={styles.returnButton} onPress={returnToCatalog}>
+        <BorderlessButton
+          style={styles.returnButton}
+          onPress={handleReturnToCatalog}
+        >
           <Icon size={32} name="chevron-left" color="#000" />
         </BorderlessButton>
 
