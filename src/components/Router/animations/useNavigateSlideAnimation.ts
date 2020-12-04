@@ -10,16 +10,17 @@ import {
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function useNavigateSlideAnimation(listOpen: boolean) {
-  const [animationFinished, setAnimationFinished] = useState(true);
-  const marginLeft = useSharedValue(listOpen ? SCREEN_WIDTH : 0);
+  const marginLeft = useSharedValue(listOpen ? -SCREEN_WIDTH : 0);
+
+  const [animationFinished, setAnimationFinished] = useState(false);
 
   const screenContainerAnimatedStyle = useAnimatedStyle(() => {
     return {
       marginLeft: withTiming(
         marginLeft.value,
         {
-          duration: 200,
-          easing: Easing.linear,
+          duration: 250,
+          easing: Easing.ease,
         },
         () => setAnimationFinished(true),
       ),
@@ -27,23 +28,16 @@ export default function useNavigateSlideAnimation(listOpen: boolean) {
   });
 
   const toggleSlideAnimation = useCallback(() => {
+    setAnimationFinished(false);
+  }, []);
+
+  useEffect(() => {
     marginLeft.value = listOpen ? -SCREEN_WIDTH : 0;
   }, [listOpen, marginLeft]);
 
-  useEffect(() => {
-    if (!animationFinished) {
-      setAnimationFinished(false);
-    }
-  }, [animationFinished, listOpen]);
-
-  useEffect(() => {
-    if (!animationFinished) {
-      toggleSlideAnimation();
-    }
-  }, [animationFinished, toggleSlideAnimation]);
-
   return {
     animationFinished,
+    toggleAnimation: toggleSlideAnimation,
     style: screenContainerAnimatedStyle,
   };
 }

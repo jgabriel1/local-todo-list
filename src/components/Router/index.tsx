@@ -19,6 +19,7 @@ const Routes: React.FC = () => {
 
   const {
     animationFinished,
+    toggleAnimation: toggleSlideAnimation,
     style: containerAnimatedStyle,
   } = useNavigateSlideAnimation(!!selectedList);
 
@@ -26,21 +27,27 @@ const Routes: React.FC = () => {
     setSelectedList({ id, name });
   }, []);
 
-  const returnToCatalog = useCallback(() => {
+  const returnToCatalog = useCallback(async () => {
+    toggleSlideAnimation();
+
     setSelectedList(null);
-  }, []);
+  }, [toggleSlideAnimation]);
 
   return (
     <Animated.View style={[styles.container, containerAnimatedStyle]}>
-      {selectedList && animationFinished && (
-        <TodoList
-          listId={selectedList.id}
-          listName={selectedList.name}
-          returnToCatalog={returnToCatalog}
-        />
-      )}
-      {!selectedList && animationFinished && (
+      <View style={styles.screenContainer}>
         <TodoListsCatalog navigateToList={navigateToList} />
+      </View>
+      {selectedList && animationFinished ? (
+        <View style={styles.screenContainer}>
+          <TodoList
+            listId={selectedList.id}
+            listName={selectedList.name}
+            returnToCatalog={returnToCatalog}
+          />
+        </View>
+      ) : (
+        <View style={styles.screenContainer} />
       )}
     </Animated.View>
   );
