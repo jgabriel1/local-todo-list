@@ -4,14 +4,17 @@ import {
   BorderlessButton,
   TouchableNativeFeedback,
 } from 'react-native-gesture-handler';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Feather as Icon } from '@expo/vector-icons';
 
 import useTodoLists from './useTodoLists';
 
 import styles from './styles';
+import { useSelectedList } from '../../hooks/selectedList';
 
-interface TodoListsCatalogProps {
-  navigateToList: (listId: number, listName: string) => void;
+interface HandleSelectListParams {
+  name: string;
+  id: number;
 }
 
 interface HandleDeleteListParams {
@@ -19,9 +22,10 @@ interface HandleDeleteListParams {
   deletedId: number;
 }
 
-const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
-  navigateToList,
-}) => {
+const TodoListsCatalog: React.FC = () => {
+  const navigation = useNavigation();
+
+  const { selectedListId, selectList, clearSelectedList } = useSelectedList();
   const { lists, addTodoList, deleteTodoList } = useTodoLists();
 
   const [newListName, setNewListName] = useState('');
@@ -65,6 +69,19 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
     [deleteTodoList],
   );
 
+  const handleSelectList = useCallback(
+    ({ id, name }: HandleSelectListParams) => {
+      selectList({ id, name });
+    },
+    [selectList],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      clearSelectedList();
+    }, [clearSelectedList]),
+  );
+
   useEffect(() => {
     if (lists.length !== 0) {
       catalogScrollViewRef.current?.scrollToEnd({
@@ -72,6 +89,12 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
       });
     }
   }, [lists]);
+
+  useEffect(() => {
+    if (selectedListId) {
+      navigation.navigate('TodoList');
+    }
+  }, [navigation, selectedListId]);
 
   return (
     <View style={styles.container}>
@@ -108,7 +131,7 @@ const TodoListsCatalog: React.FC<TodoListsCatalogProps> = ({
             key={list.id}
             style={styles.todoListItem}
             containerStyle={styles.todoListItemContainer}
-            onPress={() => navigateToList(list.id, list.name)}
+            onPress={() => handleSelectList({ id: list.id, name: list.name })}
             onLongPress={() =>
               handleDeleteList({ deletedId: list.id, name: list.name })
             }
