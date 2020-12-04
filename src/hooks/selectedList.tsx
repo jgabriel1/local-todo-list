@@ -6,7 +6,8 @@ interface SelectedListData {
 }
 
 interface SelectedListContextData {
-  selectedList: SelectedListData | null;
+  selectedListId: number;
+  selectedListName: string;
   selectList(data: SelectedListData): void;
   clearSelectedList(): void;
 }
@@ -29,7 +30,8 @@ export const SelectedListProvider: React.FC = ({ children }) => {
   return (
     <SelectedListContext.Provider
       value={{
-        selectedList,
+        selectedListId: selectedList?.id || 0,
+        selectedListName: selectedList?.name || '',
         selectList,
         clearSelectedList,
       }}
