@@ -1,41 +1,36 @@
-import { useCallback } from 'react';
+import { useMemo, useCallback, useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
-import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { EasingNode, useValue } from 'react-native-reanimated';
 
 const DEVICE_SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function useNewTodoSlideAnimation(
   afterAnimationCallback: () => void,
 ) {
-  const translation = useSharedValue(DEVICE_SCREEN_WIDTH);
+  const translation = useValue(DEVICE_SCREEN_WIDTH);
+  const [isAnimationFinished, setIsAnimationFinished] = useState(true);
 
-  const style = useAnimatedStyle(() => {
-    const marginRight = withTiming(
-      translation.value,
-      {
-        duration: 500,
-        easing: Easing.quad,
-      },
-      () => {
-        afterAnimationCallback();
-
-        translation.value = DEVICE_SCREEN_WIDTH;
-      },
-    );
-
-    return {
-      marginRight,
-    };
-  });
+  const style = useMemo(() => {
+    return { marginRight: translation };
+  }, [translation]);
 
   const startAnimation = useCallback(() => {
-    translation.value = 0;
-  }, [translation.value]);
+    setIsAnimationFinished(false);
+  }, []);
+
+  useEffect(() => {
+    if (isAnimationFinished) {
+      afterAnimationCallback();
+    } else {
+      Animated.timing(translation, {
+        toValue: 0,
+        duration: 500,
+        easing: EasingNode.quad,
+      }).start(() => {
+        setIsAnimationFinished(true);
+      });
+    }
+  }, [afterAnimationCallback, isAnimationFinished, translation]);
 
   return {
     style,

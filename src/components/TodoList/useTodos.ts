@@ -101,9 +101,11 @@ export default function useTodos(listId: number) {
   );
 
   useEffect(() => {
-    todosRepository.getAllByListId(listId).then(loadedTodos => {
-      todosDispatch({ type: 'SET_TODOS', payload: loadedTodos });
-    });
+    if (listId) {
+      todosRepository.getAllByListId(listId).then(loadedTodos => {
+        todosDispatch({ type: 'SET_TODOS', payload: loadedTodos });
+      });
+    }
   }, [listId, todosRepository]);
 
   return {
