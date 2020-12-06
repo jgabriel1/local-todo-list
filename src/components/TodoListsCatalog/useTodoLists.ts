@@ -20,6 +20,12 @@ export default function useTodoLists() {
 
   const [lists, setLists] = useState<List[]>([]);
 
+  const loadTodoLists = useCallback(async () => {
+    const todoLists = await todoListsRepository.getAll();
+
+    setLists(todoLists);
+  }, [todoListsRepository]);
+
   const addTodoList = useCallback(
     async ({ name }: CreateListParams) => {
       const newList = await todoListsRepository.create({ name });
@@ -44,12 +50,9 @@ export default function useTodoLists() {
     [todoListsRepository],
   );
 
-  useEffect(() => {
-    todoListsRepository.getAll().then(setLists);
-  }, [todoListsRepository]);
-
   return {
     lists,
+    loadTodoLists,
     addTodoList,
     deleteTodoList,
   };

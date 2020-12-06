@@ -26,7 +26,7 @@ const TodoListsCatalog: React.FC = () => {
   const navigation = useNavigation();
 
   const { selectedListId, selectList, clearSelectedList } = useSelectedList();
-  const { lists, addTodoList, deleteTodoList } = useTodoLists();
+  const { lists, loadTodoLists, addTodoList, deleteTodoList } = useTodoLists();
 
   const [newListName, setNewListName] = useState('');
 
@@ -79,7 +79,9 @@ const TodoListsCatalog: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       clearSelectedList();
-    }, [clearSelectedList]),
+
+      loadTodoLists();
+    }, [clearSelectedList, loadTodoLists]),
   );
 
   useEffect(() => {
