@@ -125,40 +125,22 @@ const TodoListsCatalog: React.FC = () => {
       <ScrollView
         ref={catalogScrollViewRef}
         contentContainerStyle={styles.catalogContainer}
-        horizontal
         showsHorizontalScrollIndicator={false}
       >
         {lists.map(list => (
           <TouchableNativeFeedback
             key={list.id}
-            style={styles.todoListItem}
-            containerStyle={styles.todoListItemContainer}
+            style={styles.todoListItemContainer}
             onPress={() => handleSelectList({ id: list.id, name: list.name })}
             onLongPress={() =>
               handleDeleteList({ deletedId: list.id, name: list.name })
             }
           >
-            <View style={{ flex: 1 }}>
+            <View style={styles.todoListItem}>
               <Text style={styles.todoListItemName}>{list.name}</Text>
 
-              <View style={styles.todoListItemTodosContainer}>
-                {list.todos.length > 0 ? (
-                  list.todos.map((todo, index) => (
-                    <Text
-                      key={String(index)}
-                      style={[
-                        styles.todoListTodoText,
-                        todo.status && styles.todoListTodoIsCompleted,
-                      ]}
-                    >
-                      {todo.text}
-                    </Text>
-                  ))
-                ) : (
-                  <Text style={styles.todoListItemTodosPlaceholder}>
-                    Press to start adding items...
-                  </Text>
-                )}
+              <View style={styles.completedContainer}>
+                <Text style={styles.completedValueText}>3 / 5</Text>
               </View>
             </View>
           </TouchableNativeFeedback>
