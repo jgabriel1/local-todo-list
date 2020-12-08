@@ -53,54 +53,45 @@ const styles = StyleSheet.create({
   },
 
   catalogContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingBottom: 40,
+    width: '100%',
   },
 
   todoListItemContainer: {
-    marginHorizontal: 10,
-    marginBottom: 20,
+    backgroundColor: '#fff',
+    minHeight: 96,
+    paddingHorizontal: 24,
+    paddingLeft: 32,
+    paddingVertical: 16,
+    borderBottomWidth: 2,
+    borderBottomColor: '#e5e5e5',
+
+    justifyContent: 'center',
   },
 
   todoListItem: {
-    borderWidth: 2,
-    borderColor: '#e5e5e5',
-    height: 320,
-    width: SCREEN_WIDTH / 2 - 30,
-
-    paddingVertical: 32,
-    paddingHorizontal: 16,
-
-    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   todoListItemName: {
     fontFamily: 'barlow600',
     fontSize: 24,
+    margin: 0,
+    padding: 0,
+    alignItems: 'center',
   },
 
-  todoListItemTodosContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  completedContainer: {
+    marginRight: 16,
+    alignItems: 'center',
   },
 
-  todoListTodoText: {
+  completedLabelText: {},
+
+  completedValueText: {
     fontFamily: 'barlow500',
     fontSize: 20,
-    marginBottom: 8,
-  },
-
-  todoListTodoIsCompleted: {
-    textDecorationLine: 'line-through',
-    textDecorationStyle: 'solid',
-  },
-
-  todoListItemTodosPlaceholder: {
-    fontFamily: 'barlow500',
-    fontSize: 15,
-    color: '#a5a5a5',
   },
 });
 

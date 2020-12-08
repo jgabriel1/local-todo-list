@@ -1,14 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { useDatabaseConnection } from '../../data/connection';
 
 interface List {
   id: number;
   name: string;
-  todos: Array<{
-    text: string;
-    status: boolean;
-  }>;
+  total_todos: number;
+  total_completed_todos: number;
 }
 
 interface CreateListParams {
@@ -21,7 +19,7 @@ export default function useTodoLists() {
   const [lists, setLists] = useState<List[]>([]);
 
   const loadTodoLists = useCallback(async () => {
-    const todoLists = await todoListsRepository.getAll();
+    const todoLists = await todoListsRepository.getAllInfos();
 
     setLists(todoLists);
   }, [todoListsRepository]);
@@ -33,9 +31,12 @@ export default function useTodoLists() {
       setLists(current => [
         ...current,
 
-        // TypeORM returns the created object todos prop as undefined, it has to
+        // TypeORM returns the created object props as undefined, they have to
         // be directly assigned here. The interface will break otherwise:
-        Object.assign(newList, { todos: [] }),
+        Object.assign(newList, {
+          total_todos: 0,
+          total_completed_todos: 0,
+        }),
       ]);
     },
     [todoListsRepository],

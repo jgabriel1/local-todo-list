@@ -5,6 +5,13 @@ interface ICreateTodoListDTO {
   name: string;
 }
 
+interface ITodoListInfo {
+  id: number;
+  name: string;
+  total_todos: number;
+  total_completed_todos: number;
+}
+
 export class TodoListsRepository {
   private ormRepository: Repository<TodoListModel>;
 
@@ -22,10 +29,19 @@ export class TodoListsRepository {
     return list;
   }
 
-  public async getAll(): Promise<TodoListModel[]> {
-    const lists = await this.ormRepository.find();
+  public async getAllInfos(): Promise<ITodoListInfo[]> {
+    const listInfos = await this.ormRepository.query(`
+      SELECT
+        todo_lists.id,
+        todo_lists.name,
+        COUNT(todos.id) AS total_todos,
+        SUM(todos.status) AS total_completed_todos
+      FROM
+        todo_lists LEFT JOIN todos ON todo_lists.id = todos.list_id
+      GROUP BY todo_lists.id;
+    `);
 
-    return lists;
+    return listInfos;
   }
 
   public async getOneById(listId: number): Promise<TodoListModel | null> {
