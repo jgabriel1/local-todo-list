@@ -140,7 +140,9 @@ const TodoListsCatalog: React.FC = () => {
               <Text style={styles.todoListItemName}>{list.name}</Text>
 
               <View style={styles.completedContainer}>
-                <Text style={styles.completedValueText}>3 / 5</Text>
+                <Text style={styles.completedValueText}>
+                  {`${list.total_completed_todos} / ${list.total_todos}`}
+                </Text>
               </View>
             </View>
           </TouchableNativeFeedback>
