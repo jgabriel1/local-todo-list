@@ -28,7 +28,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
   const connectToDatabase = useCallback(async () => {
     const createdConnection = await createConnection({
       type: 'expo',
-      database: 'TodoList.db',
+      database: '@TodoList.db',
       synchronize: true,
       entities: [TodoModel, TodoListModel],
 
