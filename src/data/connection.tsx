@@ -3,16 +3,18 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { createConnection, Connection } from 'typeorm';
 
+import { TodoListModel } from './entities/TodoListModel';
+import { TodoListsRepository } from './repositories/todoLists';
 import { TodoModel } from './entities/TodoModel';
 import { TodosRepository } from './repositories/todos';
 
 interface DatabaseConnectionContextData {
+  todoListsRepository: TodoListsRepository;
   todosRepository: TodosRepository;
 }
 
@@ -28,7 +30,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
       type: 'expo',
       database: 'TodoList.db',
       synchronize: true,
-      entities: [TodoModel],
+      entities: [TodoModel, TodoListModel],
 
       driver: require('expo-sqlite'),
     });
@@ -47,6 +49,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
   return (
     <DatabaseConnectionContext.Provider
       value={{
+        todoListsRepository: new TodoListsRepository(connection),
         todosRepository: new TodosRepository(connection),
       }}
     >

@@ -6,10 +6,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  returnButton: {
+    position: 'absolute',
+    top: 44,
+    left: 16,
+  },
+
   header: {
     paddingHorizontal: 32,
     paddingBottom: 32,
-    paddingTop: 96,
+    paddingTop: 128,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

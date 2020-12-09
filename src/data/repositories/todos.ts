@@ -4,6 +4,7 @@ import { TodoModel } from '../entities/TodoModel';
 interface ICreateTodoDTO {
   text: string;
   status: boolean;
+  list_id?: number;
 }
 
 export class TodosRepository {
@@ -16,10 +17,15 @@ export class TodosRepository {
     this.queryRunner = connection.createQueryRunner();
   }
 
-  public async create({ text, status }: ICreateTodoDTO): Promise<TodoModel> {
+  public async create({
+    text,
+    status,
+    list_id,
+  }: ICreateTodoDTO): Promise<TodoModel> {
     const todo = this.ormRepository.create({
       text,
       status,
+      list_id: list_id || 0,
     });
 
     await this.ormRepository.save(todo);
@@ -27,8 +33,10 @@ export class TodosRepository {
     return todo;
   }
 
-  public async getAll(): Promise<TodoModel[]> {
-    const todos = await this.ormRepository.find();
+  public async getAllByListId(list_id?: number): Promise<TodoModel[]> {
+    const todos = await this.ormRepository.find({
+      list_id: list_id || 0,
+    });
 
     return todos;
   }

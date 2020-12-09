@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Feather as Icon } from '@expo/vector-icons';
 import {
   BorderlessButton,
@@ -7,6 +8,7 @@ import {
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
+import { useSelectedList } from '../../hooks/selectedList';
 import useTodos from './useTodos';
 import useModalButtonAnimation from './animations/useModalButtonAnimation';
 import useInputDropAnimation from './animations/useInputDropAnimation';
@@ -17,6 +19,13 @@ import Todo from '../Todo';
 import styles from './styles';
 
 const TodoList: React.FC = () => {
+  const navigation = useNavigation();
+
+  const {
+    selectedListId: listId,
+    selectedListName: listName,
+  } = useSelectedList();
+
   const {
     todos,
     createdTodo,
@@ -24,7 +33,7 @@ const TodoList: React.FC = () => {
     addCreatedTodoToList,
     deleteTodo,
     toggleTodo,
-  } = useTodos();
+  } = useTodos(listId);
 
   const newTodoInputRef = useRef<TextInput>(null);
 
@@ -48,6 +57,10 @@ const TodoList: React.FC = () => {
     // this callback will be executed right after the animation ends:
     addCreatedTodoToList,
   );
+
+  const handleReturnToCatalog = useCallback(() => {
+    navigation.navigate('TodoListsCatalog');
+  }, [navigation]);
 
   const handleToggleNewTodoInputModal = useCallback(() => {
     setShowNewTodoInput(current => !current);
@@ -96,7 +109,14 @@ const TodoList: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>My tasks</Text>
+        <BorderlessButton
+          style={styles.returnButton}
+          onPress={handleReturnToCatalog}
+        >
+          <Icon size={32} name="chevron-left" color="#000" />
+        </BorderlessButton>
+
+        <Text style={styles.title}>{listName}</Text>
 
         <BorderlessButton onPress={handleToggleNewTodoInputModal}>
           <Animated.View style={buttonAnimatedStyle}>

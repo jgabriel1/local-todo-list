@@ -19,7 +19,7 @@ type ITodosReducer = Reducer<
   | { type: 'TOGGLE_TODO'; payload: number }
 >;
 
-export default function useTodos() {
+export default function useTodos(listId: number) {
   const { todosRepository } = useDatabaseConnection();
 
   const [{ todos, createdTodo }, todosDispatch] = useReducer<ITodosReducer>(
@@ -70,11 +70,12 @@ export default function useTodos() {
       const newTodo = await todosRepository.create({
         text,
         status: false,
+        list_id: listId,
       });
 
       todosDispatch({ type: 'SET_CREATED_TODO', payload: newTodo });
     },
-    [todosRepository],
+    [listId, todosRepository],
   );
 
   const addCreatedTodoToList = useCallback(() => {
@@ -100,10 +101,12 @@ export default function useTodos() {
   );
 
   useEffect(() => {
-    todosRepository.getAll().then(loadedTodos => {
-      todosDispatch({ type: 'SET_TODOS', payload: loadedTodos });
-    });
-  }, [todosRepository]);
+    if (listId) {
+      todosRepository.getAllByListId(listId).then(loadedTodos => {
+        todosDispatch({ type: 'SET_TODOS', payload: loadedTodos });
+      });
+    }
+  }, [listId, todosRepository]);
 
   return {
     todos,
