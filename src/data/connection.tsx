@@ -8,6 +8,7 @@ import React, {
 import { ActivityIndicator } from 'react-native';
 import { createConnection, Connection } from 'typeorm';
 
+import { migrations } from './migrations';
 import { TodoListModel } from './entities/TodoListModel';
 import { TodoListsRepository } from './repositories/todoLists';
 import { TodoModel } from './entities/TodoModel';
@@ -30,6 +31,8 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
       type: 'expo',
       database: '@TodoList.db',
       synchronize: true,
+      migrations,
+      migrationsRun: true,
       entities: [TodoModel, TodoListModel],
 
       driver: require('expo-sqlite'),
