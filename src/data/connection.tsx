@@ -30,10 +30,10 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
     const createdConnection = await createConnection({
       type: 'expo',
       database: '@TodoList.db',
-      synchronize: true,
       migrations,
       migrationsRun: true,
       entities: [TodoModel, TodoListModel],
+      synchronize: false,
 
       driver: require('expo-sqlite'),
     });
