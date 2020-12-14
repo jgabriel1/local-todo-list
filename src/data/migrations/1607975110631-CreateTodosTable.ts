@@ -8,7 +8,8 @@ export class CreateTodosTable1607975110631 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'integer',
+            isPrimary: true,
             isGenerated: true,
             generationStrategy: 'increment',
           },
@@ -22,7 +23,7 @@ export class CreateTodosTable1607975110631 implements MigrationInterface {
           },
           {
             name: 'list_id',
-            type: 'int',
+            type: 'integer',
           },
         ],
       }),

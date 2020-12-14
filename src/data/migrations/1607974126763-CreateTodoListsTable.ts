@@ -8,7 +8,8 @@ export class CreateTodoListsTable1607974126763 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'integer',
+            isPrimary: true,
             isGenerated: true,
             generationStrategy: 'increment',
           },
