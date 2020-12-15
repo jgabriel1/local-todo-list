@@ -8,6 +8,7 @@ import React, {
 import { ActivityIndicator } from 'react-native';
 import { createConnection, Connection } from 'typeorm';
 
+import { migrations } from './migrations';
 import { TodoListModel } from './entities/TodoListModel';
 import { TodoListsRepository } from './repositories/todoLists';
 import { TodoModel } from './entities/TodoModel';
@@ -28,9 +29,11 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
   const connectToDatabase = useCallback(async () => {
     const createdConnection = await createConnection({
       type: 'expo',
-      database: 'TodoList.db',
-      synchronize: true,
+      database: '@TodoList.db',
+      migrations,
+      migrationsRun: true,
       entities: [TodoModel, TodoListModel],
+      synchronize: false,
 
       driver: require('expo-sqlite'),
     });

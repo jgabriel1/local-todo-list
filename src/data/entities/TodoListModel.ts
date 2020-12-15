@@ -1,5 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { TodoModel } from './TodoModel';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('todo_lists')
 export class TodoListModel {
@@ -8,10 +7,4 @@ export class TodoListModel {
 
   @Column()
   name: string;
-
-  @OneToMany(() => TodoModel, todo => todo.list, {
-    eager: true,
-    onDelete: 'CASCADE',
-  })
-  todos: TodoModel[];
 }

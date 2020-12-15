@@ -21,7 +21,7 @@ export class TodoModel {
   @Column()
   list_id: number;
 
-  @ManyToOne(() => TodoListModel, todoList => todoList.todos)
+  @ManyToOne(() => TodoListModel)
   @JoinColumn({ name: 'list_id' })
   list: TodoListModel;
 }
