@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, ScrollView, Alert } from 'react-native';
 import {
   BorderlessButton,
-  TouchableNativeFeedback,
+  TouchableOpacity,
 } from 'react-native-gesture-handler';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Feather as Icon } from '@expo/vector-icons';
@@ -128,7 +128,7 @@ const TodoListsCatalog: React.FC = () => {
         showsHorizontalScrollIndicator={false}
       >
         {lists.map(list => (
-          <TouchableNativeFeedback
+          <TouchableOpacity
             key={list.id}
             style={styles.todoListItemContainer}
             onPress={() => handleSelectList({ id: list.id, name: list.name })}
@@ -145,7 +145,7 @@ const TodoListsCatalog: React.FC = () => {
                 </Text>
               </View>
             </View>
-          </TouchableNativeFeedback>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
